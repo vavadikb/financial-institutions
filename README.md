@@ -142,7 +142,10 @@ Retrieves a list of all users
 
 - Query Parameters
 
-  None
+  | Parameter | Type   | Required | Description    |
+  | --------- | ------ | -------- | -------------- |
+  | `id`      | number | no       | The user id    |
+  | `login`   | string | no       | The user login |
 
 - Response
 
@@ -216,6 +219,29 @@ Retrieves a list of all users
   }
   ```
 
+- Response /users?login=John
+
+```
+      {
+        "id": 1,
+        "login": "John",
+        "orders": [{
+            {
+                "id": 3,
+                "risks": "high",
+                "income per year": 20-30%,
+                "assets": [ "investing in startups"],
+                "status": "active"
+            },
+            inital-payment:1000$,
+            amount-of-money:1200$,
+            earned:[20%,200$],
+            term: "1 year"
+        }
+```
+
+---
+
 #### `GET /users/:id`
 
 get a user by id
@@ -269,11 +295,13 @@ get a user by id
 
 - Query Parameters
 
-  | Parameter | Type   | Required | Description |
-  | --------- | ------ | -------- | ----------- |
-  | `id`      | number | Yes      | The user ID |
+  | Parameter | Type   | Required | Description      |
+  | --------- | ------ | -------- | ---------------- |
+  | `id`      | number | Yes      | The user ID      |
+  | `risk`    | string | no       | The offer risk   |
+  | `income`  | string | no       | The offer income |
 
-- Response
+- Response /users/3/orders
 
   ```
   {
@@ -307,6 +335,40 @@ get a user by id
           }]
   }
   ```
+
+- Response /users/3/orders?risks=hight
+-
+
+```
+{
+            {
+                "id": 3,
+                "risks": "high",
+                "income per year": 20-30%,
+                "assets": [ "investing in startups"],
+                "status": "active"
+            },
+            inital-payment:1000$,
+            amount-of-money:1200$,
+            earned:[20%,200$],
+            term: "1 year"
+        },
+            {
+            {
+                "id": 3,
+                "risks": "high",
+                "income per year": 20-30%,
+                "assets": ["cryptocurrencies"],
+                "status": "active"
+            },
+            inital-payment:2000$,
+            amount-of-money:2400$,
+            earned:[40%,800$],
+            term: "2 year"
+            }
+          }
+
+```
 
 #### `GET /users/:id/orders/:id`
 
@@ -623,9 +685,14 @@ Show all offers
 
 - Query Parameters
 
-  None
+  | Parameter | Type   | Required | Description       |
+  | --------- | ------ | -------- | ----------------- |
+  | `id`      | number | no       | The offer ID      |
+  | `risks`   | string | no       | The offer risk    |
+  | `income`  | number | no       | % income per year |
+  | `assets`  | string | no       | offer assets      |
 
-- Response
+- Response /offers
 
   ```
   {
@@ -655,6 +722,46 @@ Show all offers
     ]
   }
   ```
+
+- Response /offer?risk=low
+
+```
+      {
+        "id": 1,
+        "risks": "low",
+        "income per year": 8%,
+        "assets": ["real estate", "stocks of large companies"],
+        "status": "active"
+      }
+```
+
+- Response /offer?income=16
+
+```
+
+      {
+        "id": 2,
+        "risks": "middle",
+        "income per year": 14-16%,
+        "assets": ["options from the profits of large companies", "stocks of technology companies"],
+        "status": "active"
+      }
+
+```
+
+- Response /offer?assets=cryptocurrencies
+
+```
+
+      {
+        "id": 3,
+        "risks": "high",
+        "income per year": 20-30%,
+        "assets": ["cryptocurrencies", "investing in startups"],
+        "status": "active"
+      }
+
+```
 
 #### `GET /offers/:id`
 
