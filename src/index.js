@@ -1,13 +1,23 @@
-const express = require("express");
+import express from "express";
+import router from "./routes/authRouter.js";
+import { pool } from "./dbConnection.js";
+
 const app = express();
 const port = 3000;
-const router = express.Router()
 
-app.get("/", (req, res) => {
-  res.send("You opend this by Docker");
-});
+app.use(express.json());
+app.use("/auth", router);
 
-
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-});
+const startServer = async () => {
+  try {
+    await pool.connect().then(() => {
+      console.log("DB connected");
+      app.listen(port, () => {
+        console.log(`Example app listening on port ${port}`);
+      });
+    });
+  } catch (e) {
+    console.log(e);
+  }
+};
+startServer();
