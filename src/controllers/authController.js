@@ -3,9 +3,17 @@ import { pool } from "../dbConnection.js";
 
 const secret = process.env.SECRET;
 
-const generateAccessToken = (username) => {
+const getIdByUserName = async (username) => {
+  const queryText = `SELECT id FROM users WHERE username=$1`;
+  const result = await pool.query(queryText, [username]);
+  return result.rows[0];
+};
+
+const generateAccessToken = async (username) => {
   const header = { alg: "HS256", typ: "JWT" };
-  const payload = { username };
+  const id = await getIdByUserName(username);
+  const payload = { id };
+
   const encodedHeader = CryptoJS.enc.Base64.stringify(
     CryptoJS.enc.Utf8.parse(JSON.stringify(header))
   );
@@ -22,7 +30,7 @@ const generateAccessToken = (username) => {
 };
 
 export const authenticateToken = (req, res, next) => {
-  const authHeader = req.headers["authorization"];
+  const authHeader = req.headers.authorization;
   const token = authHeader && authHeader.split(" ")[1];
 
   if (token == null) {
@@ -54,7 +62,7 @@ export const authenticateToken = (req, res, next) => {
     req.user = payload;
     next();
   } catch (err) {
-    console.error("Error authentication", err);
+    console.error("auth error", err);
     return res.sendStatus(500);
   }
 };
@@ -110,7 +118,7 @@ export async function login(req, res) {
       return res.status(400).json({ message: "Bad password" });
     }
 
-    const token = generateAccessToken(username);
+    const token = await generateAccessToken(username);
     return res.json({ token });
   } catch (err) {
     console.log(err);
