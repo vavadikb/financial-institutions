@@ -72,7 +72,6 @@ export async function registration(req, res) {
     const { username, password } = req.body;
 
     try {
-      // Check if the user already exists
       const queryText = "SELECT * FROM users WHERE username=$1";
       const result = await pool.query(queryText, [username]);
       if (result.rows.length > 0) {
@@ -80,8 +79,6 @@ export async function registration(req, res) {
           .status(400)
           .json({ message: `User with username ${username} already created` });
       }
-
-      // Hash the password and create a new user record
       const hashPassword = CryptoJS.SHA256(password).toString();
       const insertText = "INSERT INTO users(username, password) VALUES($1, $2)";
       await pool.query(insertText, [username, hashPassword]);
