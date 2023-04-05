@@ -1,12 +1,14 @@
 import express from "express";
-import router from "./routes/authRouter.js";
+import authRouter from "./routes/authRouter.js";
+import offerRouter from "./routes/offersRouter.js";
 import { pool } from "./dbConnection.js";
 
 const app = express();
 const port = 3000;
 
 app.use(express.json());
-app.use("/auth", router);
+app.use("/auth", authRouter);
+app.use("/", offerRouter);
 
 const startServer = async () => {
   try {
