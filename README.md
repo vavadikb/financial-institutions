@@ -14,8 +14,7 @@
     - [Using `npm start`](#using-npm-start)
 - [Hedge Fund API Documentation](#Hedge-Fund-api-documentation)
   - [Base URL](#base-url)
-  - [Authentication](#authentication)
-  - [Endpoints](#endpoints)
+  - [Database Relation](#schema)
     - [Autorization](#general-responses)
       - [`/login`](#record-foundupdated)
       - [`/registration`](#requesting-many-records)
@@ -49,11 +48,28 @@ This API provides information about offers and users of this fund
 
 `http://localhost:3000`
 
-## Endpoints
+## Database relation
+
+![Иллюстрация к проекту](https://raw.githubusercontent.com/vavadikb/financial-institutions/main/db%20relation%20%E2%80%94.png)
+
+- `users` - this is a table with active users, contains id and username and password
+  Relation: Balance`1 to 1` and deals `1 to many`
+- `balance`- that shows your account details, how much money you earned, your money amount and you initalcapital
+  Relation:`1 to 1`table with users
+- `deals` - it is a table contains primary key id and user_id, users can have many deals and deals can have many offers
+  Relation: `1 to many` relation with `users` and `deals_offers`
+- `deals_offers` - many to many relationship deals and offers table that connect deals and offers by offers_id and deals_id
+  Relation: `many to many`
+- `offers` - ways to earn money which contains different assets(stock of cmpanies, crypto etc.).
+  Offers can have many deals and many assets,
+  Relations: deals_offers offers `1 to many`, offers assets `1 to many `
+
+- `assets` - that table shows the ways to earn money and describe it, contain id, offer_id, title and description
+  Relation: `many` assets can have `1` offer
 
 ## Autorization
 
-# /login
+### /login
 
 Log in user account
 

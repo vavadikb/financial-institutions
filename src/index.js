@@ -10,6 +10,7 @@ app.use("/auth", router);
 
 const startServer = async () => {
   try {
+    console.log("index.js started");
     await pool.connect().then(() => {
       console.log("DB connected");
       app.listen(port, () => {
