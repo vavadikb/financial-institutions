@@ -1,5 +1,3 @@
-
-
 CREATE TABLE IF NOT EXISTS users (
   id SERIAL PRIMARY KEY,
   username VARCHAR(50) NOT NULL,
@@ -15,6 +13,15 @@ CREATE TABLE IF NOT EXISTS capital (
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS deals (
+  id SERIAL PRIMARY,
+  user_id INTEGER NOT NULL,
+  deal_opened TIMESTAMP, 
+  deal_closed TIMESTAMP,
+  money_earned DECIMAL(100,3), 
+  inital_payment DECIMAL(100,3),
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+)
 
 CREATE TABLE IF NOT EXISTS offers (
   id SERIAL PRIMARY KEY,
