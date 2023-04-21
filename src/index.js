@@ -1,6 +1,9 @@
 import express from "express";
 import authRouter from "./routes/authRouter.js";
 import offerRouter from "./routes/offersRouter.js";
+import assetsRouter from "./routes/assetsRouter.js";
+import dealsRouter from "./routes/dealsRouter.js";
+import balanceRouter from "./routes/balanceRouter.js";
 import { pool } from "./dbConnection.js";
 
 const app = express();
@@ -8,7 +11,7 @@ const port = 3000;
 
 app.use(express.json());
 app.use("/auth", authRouter);
-app.use("/", offerRouter);
+app.use("/", assetsRouter, offerRouter, dealsRouter, balanceRouter);
 
 const startServer = async () => {
   try {

@@ -4,28 +4,20 @@ CREATE TABLE IF NOT EXISTS users (
   password VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS capital (
-  id SERIAL PRIMARY KEY,
-  user_id INTEGER NOT NULL,
-  money_amount MONEY NOT NULL,
-  capital_earned MONEY NOT NULL,
-  initial_capital MONEY NOT NULL,
-  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS deals (
-  id SERIAL PRIMARY,
-  user_id INTEGER NOT NULL,
-  deal_opened TIMESTAMP, 
-  deal_closed TIMESTAMP,
-  money_earned DECIMAL(100,3), 
-  inital_payment DECIMAL(100,3),
-  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+CREATE TABLE IF NOT EXISTS user_balance(
+id SERIAL PRIMARY KEY,
+user_id  INTEGER NOT NULL,
+cash DECIMAL(100,3),
+money_earned NUMERIC(100,3),
+total_capital NUMERIC(100,3),
+money_in_deals NUMERIC(100,3),
+FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 )
 
 CREATE TABLE IF NOT EXISTS offers (
   id SERIAL PRIMARY KEY,
-  risks DECIMAL(5, 2) NOT NULL,
+  assets_id  INTEGER[] NOT NULL,
+  risks VARCHAR(50) NOT NULL,
   income_percent DECIMAL(5, 2) NOT NULL,
   title VARCHAR(50) NOT NULL,
   description TEXT NOT NULL
@@ -35,14 +27,18 @@ CREATE TABLE IF NOT EXISTS users_offers (
   id SERIAL PRIMARY KEY,
   users_id INTEGER NOT NULL,
   offers_id INTEGER NOT NULL,
+  deal_opened TIMESTAMP, 
+  deal_closed TIMESTAMP,
+  money_earned DECIMAL(100,3), 
+  inital_payment DECIMAL(100,3) NOT NULL,
   FOREIGN KEY (users_id) REFERENCES users(id) ON DELETE CASCADE,
   FOREIGN KEY (offers_id) REFERENCES offers(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS assets (
   id SERIAL PRIMARY KEY,
-  offer_id INTEGER NOT NULL,
+  income_percent DECIMAL(5,2) NOT NULL,
+  risks VARCHAR(50) NOT NULL,
   title VARCHAR(50) NOT NULL,
   description TEXT NOT NULL,
-  FOREIGN KEY (offer_id) REFERENCES offers(id) ON DELETE CASCADE
 );
