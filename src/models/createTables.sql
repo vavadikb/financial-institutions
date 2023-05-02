@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS users (
   id SERIAL PRIMARY KEY,
   username VARCHAR(50) NOT NULL,
-  password VARCHAR(50) NOT NULL
+  password VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS user_balance(
@@ -23,14 +23,21 @@ CREATE TABLE IF NOT EXISTS offers (
   description TEXT NOT NULL
 );
 
+create table IF NOT EXISTS assets_offers(
+	id serial primary key,
+	asset_id integer NOT NULL,
+	offer_id integer NOT NULL,
+	FOREIGN KEY (asset_id) REFERENCES assets(id) ON DELETE CASCADE,
+	FOREIGN KEY (offer_id) REFERENCES offers(id) ON DELETE CASCADE
+)
+
 CREATE TABLE IF NOT EXISTS users_offers (
   id SERIAL PRIMARY KEY,
   users_id INTEGER NOT NULL,
   offers_id INTEGER NOT NULL,
-  deal_opened TIMESTAMP, 
-  deal_closed TIMESTAMP,
   money_earned DECIMAL(100,3), 
-  inital_payment DECIMAL(100,3) NOT NULL,
+  money_in_deal DECIMAL(100,3) NOT NULL,
+  status VARCHAR(50),
   FOREIGN KEY (users_id) REFERENCES users(id) ON DELETE CASCADE,
   FOREIGN KEY (offers_id) REFERENCES offers(id) ON DELETE CASCADE
 );
@@ -42,3 +49,5 @@ CREATE TABLE IF NOT EXISTS assets (
   title VARCHAR(50) NOT NULL,
   description TEXT NOT NULL,
 );
+
+

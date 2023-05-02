@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 const { Pool } = pkg;
 
 dotenv.config();
-
+console.log(process.env.DB_USER, process.env.SECRET);
 export const pool = new Pool({
   user: process.env.DB_USER,
   host: process.env.DB_HOST,

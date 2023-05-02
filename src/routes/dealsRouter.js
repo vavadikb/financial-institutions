@@ -1,21 +1,16 @@
 import express from "express";
 
-import {
-  getDeals,
-  getDealbyId,
-  putDeal,
-  patchDeal,
-  deleteDeal,
-  createDeal,
-} from "../controllers/dealsController.js";
+import { DealsController } from "../controllers/dealsController.js";
 
+const dealController = new DealsController();
 const router = express.Router();
 
-router.get("/deals", getDeals);
-router.get("/deals/:id", getDealbyId);
-router.post("/deals", createDeal);
-router.put("/deals/:id", putDeal);
-router.patch("/deals/:id", patchDeal);
-router.delete("/deals/:id", deleteDeal);
+router.get("/deals", dealController.getDeals);
+router.get("/deals/:id", dealController.getDealbyId);
+router.post("/deals", dealController.createDeal);
+router.put("/deals/:id", dealController.putDeal);
+router.put("/close-deal/:id", dealController.closeDeal);
+router.patch("/deals/:id", dealController.patchDeal);
+router.delete("/deals/:id", dealController.deleteDeal);
 
 export default router;

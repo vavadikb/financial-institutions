@@ -1,4 +1,5 @@
 import CryptoJS from "crypto-js";
+import ApiError from "../ApiError/ApiError.js";
 import { pool } from "../dbConnection.js";
 
 const secret = process.env.SECRET;
@@ -46,7 +47,7 @@ export const authenticateToken = (req, res, next) => {
   );
   const secret = process.env.SECRET;
   const signature = CryptoJS.enc.Base64.parse(encodedSignature);
-
+  console.log(header, payload, signature);
   try {
     const isVerified = CryptoJS.HmacSHA256(
       encodedHeader + "." + encodedPayload,
@@ -63,11 +64,11 @@ export const authenticateToken = (req, res, next) => {
     next();
   } catch (err) {
     console.error("auth error", err);
-    return res.sendStatus(500);
+    return next(ApiError.internal(e.message));
   }
 };
 
-export async function registration(req, res) {
+export async function registration(req, res, next) {
   try {
     const { username, password } = req.body;
 
@@ -83,6 +84,16 @@ export async function registration(req, res) {
       const insertText = "INSERT INTO users(username, password) VALUES($1, $2)";
       await pool.query(insertText, [username, hashPassword]);
 
+      const queryId = "SELECT id FROM users WHERE username=$1";
+      const id = await pool.query(queryId, [username]);
+      console.log(id);
+
+      const createBlance =
+        "INSERT INTO user_balance(user_id,cash,money_earned,total_capital, money_in_deals) VALUES($1,0,0,0,0)";
+
+      console.log(id.rows[0].id);
+      await pool.query(createBlance, [id.rows[0].id]);
+
       return res.json({
         message: `User ${username} successfully registered`,
       });
@@ -92,11 +103,11 @@ export async function registration(req, res) {
     }
   } catch (err) {
     console.error("Error connecting to database", err);
-    return res.status(500).json({ message: "Internal server error" });
+    return next(ApiError.internal(e.message));
   }
 }
 
-export async function login(req, res) {
+export async function login(req, res, next) {
   const { username, password } = req.body;
 
   try {
@@ -123,12 +134,12 @@ export async function login(req, res) {
   }
 }
 
-export async function getUsers(req, res) {
+export async function getUsers(req, res, next) {
   try {
-    const result = await pool.query("SELECT username FROM users;");
+    const result = await pool.query("SELECT username FROM users");
     res.json(result.rows);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Internal server error" });
+    return next(ApiError.internal(e.message));
   }
 }

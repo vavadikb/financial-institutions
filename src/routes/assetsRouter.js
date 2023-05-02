@@ -1,5 +1,4 @@
 import express from "express";
-
 import {
   getAssets,
   getAssetbyId,
@@ -11,7 +10,7 @@ import {
 
 const router = express.Router();
 
-router.get("/assets", getAssets);
+router.get("/assets",  getAssets);
 router.get("/assets/:id", getAssetbyId);
 router.post("/assets", postAsset);
 router.put("/assets/:id", putAsset);

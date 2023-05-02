@@ -4,12 +4,15 @@ import {
   login,
   registration,
   getUsers,
-  authenticateToken,
 } from "../controllers/authController.js";
 
+import { AuthMiddleware } from "../middlewares/isAuth.js";
+
+const isAuth = new AuthMiddleware();
 const router = express.Router();
+
 router.post("/login", login);
 router.post("/registration", registration);
-router.get("/login", authenticateToken, getUsers);
+router.get("/login", isAuth.authenticateToken, getUsers);
 
 export default router;
