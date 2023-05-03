@@ -1,12 +1,5 @@
 import express from "express";
 
-// import {
-//   getUser,
-//   getUserById,
-//   putUser,
-//   patchUser,
-//   deleteUser,
-// } from "../controllers/usersController.js";
 import { UserController } from "../controllers/usersController.js";
 
 const userController = new UserController();
