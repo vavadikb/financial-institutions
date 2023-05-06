@@ -15,6 +15,7 @@ export class BalanceService {
     } catch (e) {
       console.error(e);
       console.log("failed to get users balance");
+      throw e;
     }
   }
 
@@ -29,6 +30,7 @@ export class BalanceService {
     } catch (e) {
       console.error(e);
       console.log(`failed to get balance ith id ${id}`);
+      throw e;
     }
   }
 
@@ -58,6 +60,7 @@ export class BalanceService {
     } catch (e) {
       console.error(e);
       console.log("failed to post");
+      throw e;
     }
   }
 
@@ -101,6 +104,7 @@ export class BalanceService {
     } catch (e) {
       console.error(e);
       console.log("failed to update");
+      throw e;
     }
   }
 

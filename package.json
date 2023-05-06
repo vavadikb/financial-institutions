@@ -20,6 +20,7 @@
     "jsonwebtoken": "^9.0.0",
     "node-cron": "^3.0.2",
     "pg": "^8.10.0",
-    "postgres": "^3.3.4"
+    "postgres": "^3.3.4",
+    "swagger-ui-express": "^4.6.2"
   }
 }

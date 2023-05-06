@@ -14,6 +14,7 @@ export class AssetsService {
       return result;
     } catch (e) {
       console.error(e);
+      throw e;
     }
   }
 
@@ -27,6 +28,7 @@ export class AssetsService {
       return result;
     } catch (e) {
       console.error(e);
+      throw e;
     }
   }
 
@@ -43,6 +45,7 @@ export class AssetsService {
       console.log(result);
     } catch (e) {
       console.error(e);
+      throw e;
     }
   }
 
@@ -77,6 +80,7 @@ export class AssetsService {
     } catch (e) {
       console.error(e);
       console.log("failed to update fields");
+      throw e;
     }
   }
 
@@ -89,6 +93,7 @@ export class AssetsService {
     } catch (e) {
       console.error(e);
       console.log("failed delete");
+      throw e;
     }
   }
 }

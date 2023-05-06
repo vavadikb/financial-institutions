@@ -13,14 +13,15 @@ export class DealsServices {
       return result;
     } catch (e) {
       console.error(e);
-      console.log("failed to get users balance");
+      throw e;
     }
   }
 
   async getDealById(id) {
     try {
-      const tableName = "user_balance";
+      const tableName = "users_offers";
       const factory = new GetFactoryById();
+      console.log(id);
       const getQuery = factory.createGetQuery(tableName);
       const result = await getQuery.getRecord(id);
       return result;
@@ -93,7 +94,7 @@ export class DealsServices {
       return updatedDealId;
     } catch (e) {
       console.error(e);
-      console.log("failed to update deal");
+      throw e;
     }
   }
 
@@ -105,7 +106,7 @@ export class DealsServices {
       await deleteBalance.deleteRecord(tableName);
     } catch (e) {
       console.error(e);
-      console.log("failed to delete user_balance");
+      throw e;
     }
   }
 

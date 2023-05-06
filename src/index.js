@@ -10,12 +10,18 @@ import { pool } from "./dbConnection.js";
 import { update } from "./cron/cron.js";
 import ErrorHandler from "./middlewares/ErrorHandler.js";
 
+import swaggerUi from "swagger-ui-express";
+
+import swaggerDocument from "./swagger.json" assert { type: "json" };
+
 const app = express();
 const port = 3000;
 
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 app.use(express.json());
 app.use(ErrorHandler);
-app.use("/auth", authRouter);
+
 app.use(
   "/",
   assetsRouter,
@@ -23,7 +29,8 @@ app.use(
   dealsRouter,
   balanceRouter,
   assetsOffersRouter,
-  usersRouter
+  usersRouter,
+  authRouter
 );
 
 const startServer = async () => {

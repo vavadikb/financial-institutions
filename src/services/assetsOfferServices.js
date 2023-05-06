@@ -16,6 +16,7 @@ export class AssetsOffersServices {
     } catch (e) {
       console.error(e);
       console.log(`failed to get Assets Offers`);
+      throw e;
     }
   }
 
@@ -30,6 +31,7 @@ export class AssetsOffersServices {
     } catch (e) {
       console.error(e);
       console.log(`failed to get Assets Offers by Id`);
+      throw e;
     }
   }
 
@@ -71,6 +73,7 @@ export class AssetsOffersServices {
     } catch (e) {
       console.error(e);
       console.log(`failed to create Assets Offers`);
+      throw e;
     }
   }
 
@@ -85,6 +88,7 @@ export class AssetsOffersServices {
     } catch (e) {
       console.error(e);
       console.log(`failed to delete Assets Offers`);
+      throw e;
     }
   }
 }

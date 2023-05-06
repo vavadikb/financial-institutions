@@ -2,7 +2,8 @@ import CryptoJS from "crypto-js";
 import ApiError from "../ApiError/ApiError.js";
 import { pool } from "../dbConnection.js";
 
-const secret = process.env.SECRET;
+const secret = process.env.SECRET || "SECRET_KEY_RANDOM";
+console.log(secret);
 
 const getIdByUserName = async (username) => {
   const queryText = `SELECT id FROM users WHERE username=$1`;
@@ -25,6 +26,7 @@ const generateAccessToken = async (username) => {
     encodedHeader + "." + encodedPayload,
     secret
   );
+
   const encodedSignature = CryptoJS.enc.Base64.stringify(signature);
   const token = `${encodedHeader}.${encodedPayload}.${encodedSignature}`;
   return token;
@@ -109,7 +111,6 @@ export async function registration(req, res, next) {
 
 export async function login(req, res, next) {
   const { username, password } = req.body;
-
   try {
     const result = await pool.query(
       `SELECT * FROM users WHERE username = '${username}'`
@@ -121,12 +122,17 @@ export async function login(req, res, next) {
 
     const user = result.rows[0];
     const hashPassword = CryptoJS.SHA256(password).toString();
+    console.log(hashPassword);
+    console.log(
+      "d109d56fe0913b1b594d244caa03b3a96c875414656072612bbddba45aa77768"
+    );
 
     if (user.password !== hashPassword) {
       return res.status(400).json({ message: "Bad password" });
     }
-
+    console.log(username, password, result);
     const token = await generateAccessToken(username);
+
     return res.json({ token });
   } catch (err) {
     console.log(err);

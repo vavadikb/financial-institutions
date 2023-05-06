@@ -14,6 +14,7 @@ export class OfferServices {
     } catch (e) {
       console.error(e);
       console.log("failed to get users balance");
+      throw e;
     }
   }
 
@@ -27,6 +28,7 @@ export class OfferServices {
       return result;
     } catch (e) {
       console.error(e);
+      throw e;
     }
   }
 
@@ -85,6 +87,7 @@ export class OfferServices {
     } catch (e) {
       console.error(e);
       console.log("failed to create offer");
+      throw e;
     }
   }
 
@@ -121,10 +124,11 @@ export class OfferServices {
 
       await pool.query(query, queryParams);
 
-      return res.sendStatus(200);
+      return "updated";
     } catch (e) {
       console.error(e);
       console.log("failed to update");
+      throw e;
     }
   }
 
@@ -137,6 +141,7 @@ export class OfferServices {
     } catch (e) {
       console.error(e);
       console.log("failed to delete offer");
+      throw e;
     }
   }
 }

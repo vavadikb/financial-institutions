@@ -37,7 +37,7 @@ export class OffresController {
     try {
       const id = req.params.id;
       const result = await offerService.updateOffer(req.body, id);
-      return res.status(200).json(result.rows);
+      return res.status(200).json(result);
     } catch (e) {
       console.error(e);
       return next(ApiError.internal(e.message));
