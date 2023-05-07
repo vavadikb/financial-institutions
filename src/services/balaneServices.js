@@ -1,3 +1,4 @@
+import { updateDeal } from "../cron/cron_func.js";
 import { pool } from "../dbConnection.js";
 import { DeleteFactory } from "../utils/DeleteRecordFactory.js";
 import { GetAllRecordFactory } from "../utils/getAllRecordsFactory.js";
@@ -68,7 +69,7 @@ export class BalanceService {
     try {
       const { user_id, cash, money_earned, total_capital, money_in_deal } =
         body;
-      console.log(balanceId);
+
       const queryValues = [];
       let updateQuery = "UPDATE user_balance SET";
       if (user_id !== undefined) {
@@ -91,16 +92,15 @@ export class BalanceService {
         updateQuery += ` money_in_deal = $${queryValues.length + 1} ,`;
         queryValues.push(money_in_deal);
       }
-
       updateQuery = updateQuery.slice(0, -1);
       queryValues.push(id);
 
       updateQuery += ` WHERE id = $${queryValues.length}`;
       console.log(queryValues);
       console.log(updateQuery);
-      const updatedDealId = await pool.query(updateQuery, queryValues);
+      await pool.query(updateQuery, queryValues);
 
-      res.json(updatedDealId.rows[0]);
+      return "updated 200";
     } catch (e) {
       console.error(e);
       console.log("failed to update");

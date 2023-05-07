@@ -2,6 +2,7 @@ import { pool } from "../dbConnection.js";
 import ApiError from "../ApiError/ApiError.js";
 import { DeleteFactory } from "../utils/DeleteRecordFactory.js";
 import { BalanceService } from "../services/balaneServices.js";
+import { body } from "express-validator";
 
 const balanceServices = new BalanceService();
 
@@ -40,22 +41,23 @@ export default class BalanceController {
   async putBalance(req, res, next) {
     try {
       const id = req.params.id;
-      const updatedDealId = await balanceServices.updateBalance(req.body, id);
-      return res.json(updatedDealId.rows[0]);
+      const updatedMessage = await balanceServices.updateBalance(id, req.body);
+      return res.json(updatedMessage);
     } catch (err) {
       console.error(err.message);
-      return next(ApiError.internal(e.message));
+      return next(ApiError.internal(err.message));
     }
   }
 
   async patchBalance(req, res, next) {
     try {
       const id = req.params.id;
+      console.log(id);
       const updatedDealId = await balanceServices.updateBalance(req.body, id);
       return res.json(updatedDealId.rows[0]);
     } catch (err) {
       console.error(err.message);
-      return next(ApiError.internal(e.message));
+      return next(ApiError.internal(err.message));
     }
   }
 

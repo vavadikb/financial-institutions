@@ -22,6 +22,42 @@
             }
           }
         }
+      },
+      "post": {
+        "tags": ["Balances"],
+        "summary": "create new balance  for user",
+        "description": "create new record in user_balance table",
+        "operationId": "createBalances",
+        "parameters": [
+          {
+            "name": "Balance",
+            "in": "body",
+            "description": "balance object",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "cash": {
+                  "type": "number",
+                  "default": 10000
+                },
+                "users_id": {
+                  "type": "number",
+                  "default": 6
+                }
+              }
+            }
+          }
+        ],
+
+        "responses": {
+          "201": {
+            "description": "deal created"
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
       }
     },
     "/balance/{id}": {
@@ -64,20 +100,20 @@
             "format": "int64"
           },
           {
-            "name": "user",
+            "name": "Balance",
             "in": "body",
-            "description": "User object",
+            "description": "balance object",
             "required": true,
             "schema": {
               "type": "object",
               "properties": {
-                "username": {
-                  "type": "string",
-                  "default": "new asset"
+                "cash": {
+                  "type": "number",
+                  "default": 10000
                 },
-                "password": {
-                  "type": "string",
-                  "default": "new password"
+                "users_id": {
+                  "type": "number",
+                  "default": 6
                 }
               }
             }
@@ -86,51 +122,14 @@
 
         "responses": {
           "200": {
-            "description": "Asset updated",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "username": {
-                  "type": "string",
-                  "default": "new username"
-                },
-                "password": {
-                  "type": "string",
-                  "default": "new password"
-                }
-              }
-            }
+            "description": "Asset updated"
           },
           "404": {
             "description": "User not found"
           }
         }
       },
-      "post": {
-        "tags": ["Balances"],
-        "summary": "Update asset by ID",
-        "description": "Updates a single asset",
-        "operationId": "updateAssetById",
-        "parameters": {
-          "name": "user",
-          "in": "body",
-          "description": "User object",
-          "required": true,
-          "schema": {
-            "type": "object",
-            "properties": {
-              "username": {
-                "type": "string",
-                "default": "new offer"
-              },
-              "password": {
-                "type": "string",
-                "default": "new password"
-              }
-            }
-          }
-        }
-      },
+
       "delete": {
         "tags": ["Balances"],
         "summary": "delete user by ID",
@@ -160,14 +159,54 @@
     "/assets-offers": {
       "get": {
         "tags": ["Assets-Offers"],
-        "summary": "Get all assets",
-        "description": "Returns a list of all users",
+        "summary": "Get all assets-offers  records ",
+        "description": "Returns a list of all assets-offers",
         "responses": {
           "200": {
-            "description": "A list of users",
+            "description": "A list of assets-offers",
             "schema": {
               "type": "array"
             }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Assets-Offers"],
+        "summary": "create new assets-offers record",
+        "description": "create new record in assets_offers teble",
+        "operationId": "createAssetsOffers",
+        "parameters": [
+          {
+            "name": "assets-offers",
+            "in": "body",
+            "description": "assets-offers object",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "assets_ids": {
+                  "type": "array",
+                  "default": [5, 6]
+                },
+                "title": {
+                  "type": "string",
+                  "default": "title"
+                },
+                "description": {
+                  "type": "string",
+                  "default": "description"
+                }
+              }
+            }
+          }
+        ],
+
+        "responses": {
+          "201": {
+            "description": "assets-offers record created"
+          },
+          "400": {
+            "description": "Invalid input"
           }
         }
       }
@@ -175,14 +214,14 @@
     "/assets-offers/{id}": {
       "get": {
         "tags": ["Assets-Offers"],
-        "summary": "Get assets by ID",
-        "description": "Returns a single user",
-        "operationId": "getUserById",
+        "summary": "Get assets-offers by ID",
+        "description": "Returns a single assets-offers record",
+        "operationId": "getAssetsOffersById",
         "parameters": [
           {
             "name": "id",
             "in": "path",
-            "description": "ID of user to return",
+            "description": "ID of assets-offers to return",
             "required": true,
             "type": "integer",
             "format": "int64"
@@ -190,43 +229,19 @@
         ],
         "responses": {
           "200": {
-            "description": "Asset found"
+            "description": "Asset-offers found"
           },
           "404": {
-            "description": "Asset not found"
+            "description": "Asset-offers not found"
           }
         }
       },
-      "post": {
-        "tags": ["Assets-Offers"],
-        "summary": "Update asset by ID",
-        "description": "Updates a single asset",
-        "operationId": "updateAssetById",
-        "parameters": {
-          "name": "user",
-          "in": "body",
-          "description": "User object",
-          "required": true,
-          "schema": {
-            "type": "object",
-            "properties": {
-              "username": {
-                "type": "string",
-                "default": "new offer"
-              },
-              "password": {
-                "type": "string",
-                "default": "new password"
-              }
-            }
-          }
-        }
-      },
+
       "delete": {
         "tags": ["Assets-Offers"],
-        "summary": "delete user by ID",
-        "description": "delete user",
-        "operationId": "deleteUser",
+        "summary": "delete assets-offers by ID",
+        "description": "delete assets-offers",
+        "operationId": "deleteAssetsffers",
         "parameters": [
           {
             "name": "id",
@@ -239,10 +254,10 @@
         ],
         "responses": {
           "204": {
-            "description": "User delted"
+            "description": "assets-offers record delted"
           },
           "404": {
-            "description": "User not found"
+            "description": "assets-offers record not found"
           }
         }
       }
@@ -401,6 +416,50 @@
             }
           }
         }
+      },
+      "post": {
+        "tags": ["Assets"],
+        "summary": "create new deal",
+        "description": "create new record in users_offers users",
+        "operationId": "createDeal",
+        "parameters": [
+          {
+            "name": "deal",
+            "in": "body",
+            "description": "deal object",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "default": "crypto"
+                },
+                "description": {
+                  "type": "string",
+                  "default": "Invest in BTC, ETH, SOL"
+                },
+                "income_perсent": {
+                  "type": "number",
+                  "default": 25
+                },
+                "risks": {
+                  "type": "string",
+                  "default": "high"
+                }
+              }
+            }
+          }
+        ],
+
+        "responses": {
+          "201": {
+            "description": "deal created"
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
       }
     },
     "/assets/{id}": {
@@ -443,20 +502,28 @@
             "format": "int64"
           },
           {
-            "name": "user",
+            "name": "deal",
             "in": "body",
-            "description": "User object",
+            "description": "deal object",
             "required": true,
             "schema": {
               "type": "object",
               "properties": {
-                "username": {
+                "title": {
                   "type": "string",
-                  "default": "new asset"
+                  "default": "crypto"
                 },
-                "password": {
+                "description": {
                   "type": "string",
-                  "default": "new password"
+                  "default": "Invest in BTC, ETH, SOL"
+                },
+                "income_perсent": {
+                  "type": "number",
+                  "default": 25
+                },
+                "risks": {
+                  "type": "string",
+                  "default": "high"
                 }
               }
             }
@@ -485,31 +552,7 @@
           }
         }
       },
-      "post": {
-        "tags": ["Assets"],
-        "summary": "Update asset by ID",
-        "description": "Updates a single asset",
-        "operationId": "updateAssetById",
-        "parameters": {
-          "name": "user",
-          "in": "body",
-          "description": "User object",
-          "required": true,
-          "schema": {
-            "type": "object",
-            "properties": {
-              "username": {
-                "type": "string",
-                "default": "new offer"
-              },
-              "password": {
-                "type": "string",
-                "default": "new password"
-              }
-            }
-          }
-        }
-      },
+
       "delete": {
         "tags": ["Assets"],
         "summary": "delete user by ID",
@@ -546,6 +589,46 @@
             "schema": {
               "type": "array"
             }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Deals"],
+        "summary": "create new deal",
+        "description": "create new record in users_offers users",
+        "operationId": "createDeal",
+        "parameters": [
+          {
+            "name": "deal",
+            "in": "body",
+            "description": "deal object",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "offers_id": {
+                  "type": "number",
+                  "default": 18
+                },
+                "users_id": {
+                  "type": "number",
+                  "default": 57
+                },
+                "money_in_deal": {
+                  "type": "number",
+                  "default": 1000
+                }
+              }
+            }
+          }
+        ],
+
+        "responses": {
+          "201": {
+            "description": "deal created"
+          },
+          "400": {
+            "description": "Invalid input"
           }
         }
       }
@@ -590,20 +673,24 @@
             "format": "int64"
           },
           {
-            "name": "user",
+            "name": "deal",
             "in": "body",
-            "description": "User object",
+            "description": "deal object",
             "required": true,
             "schema": {
               "type": "object",
               "properties": {
-                "username": {
-                  "type": "string",
-                  "default": "new deal"
+                "offers_id": {
+                  "type": "number",
+                  "default": 18
                 },
-                "password": {
-                  "type": "string",
-                  "default": "new password"
+                "users_id": {
+                  "type": "number",
+                  "default": 57
+                },
+                "money_in_deal": {
+                  "type": "number",
+                  "default": 1000
                 }
               }
             }
@@ -612,51 +699,14 @@
 
         "responses": {
           "200": {
-            "description": "Deal updated",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "username": {
-                  "type": "string",
-                  "default": "new username"
-                },
-                "password": {
-                  "type": "string",
-                  "default": "new password"
-                }
-              }
-            }
+            "description": "Deal updated"
           },
           "404": {
             "description": "User not found"
           }
         }
       },
-      "post": {
-        "tags": ["Deals"],
-        "summary": "Update deal by ID",
-        "description": "Updates a single user",
-        "operationId": "updateDealById",
-        "parameters": {
-          "name": "user",
-          "in": "body",
-          "description": "User object",
-          "required": true,
-          "schema": {
-            "type": "object",
-            "properties": {
-              "username": {
-                "type": "string",
-                "default": "new offer"
-              },
-              "password": {
-                "type": "string",
-                "default": "new password"
-              }
-            }
-          }
-        }
-      },
+
       "delete": {
         "tags": ["Deals"],
         "summary": "delete user by ID",
@@ -728,7 +778,7 @@
         ],
 
         "responses": {
-          "200": {
+          "201": {
             "description": "User created"
           },
           "400": {

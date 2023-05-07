@@ -34,6 +34,7 @@ export class DealsServices {
   async createDeal(body) {
     try {
       const { users_id, offers_id, money_in_deal } = body;
+      console.log(users_id, offers_id, money_in_deal);
       const userCashQuery = "SELECT cash FROM user_balance WHERE user_id=$1";
       const userCash = await pool.query(userCashQuery, [users_id]);
       if (money_in_deal < +userCash.rows[0].cash) {

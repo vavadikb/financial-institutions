@@ -22,11 +22,10 @@ export class AssetsOffersServices {
 
   async getById(id) {
     try {
-      const tableName = "assets";
+      const tableName = "assets_offers";
       const factory = new GetFactoryById();
       const getQuery = factory.createGetQuery(tableName);
       const result = await getQuery.getRecord(id);
-
       return result;
     } catch (e) {
       console.error(e);
@@ -56,17 +55,14 @@ export class AssetsOffersServices {
       `;
 
       const offerValues = [risks, income_percent, title, description];
-      console.log(offerValues);
       const {
         rows: [{ id: offerId }],
       } = await pool.query(offerQuery, offerValues);
 
       const assetOffersValues = assets_ids.map((assetId) => [assetId, offerId]);
-      console.log(assetOffersValues);
       const assetOffersQuery = `INSERT INTO assets_offers(asset_id, offer_id) VALUES ($1,$2)`;
 
       assetOffersValues.forEach(async (item) => {
-        console.log(item);
         await pool.query(assetOffersQuery, item);
       });
       return offerValues;

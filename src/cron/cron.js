@@ -3,7 +3,7 @@ import { spawn } from "child_process";
 import { updateDeal } from "./cron_func.js";
 
 export async function update() {
-  const cron = spawn("node", ["./cron/cron_func.js"]);
+  const cron = spawn("node", ["./src/cron/cron_func.js"]);
 
   cron.stdout.on("data", async (data) => {
     console.log(`stdout: ${data}`);
