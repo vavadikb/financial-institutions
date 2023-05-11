@@ -1,4 +1,3 @@
-import { updateDeal } from "../cron/cron_func.js";
 import { pool } from "../dbConnection.js";
 import { DeleteFactory } from "../utils/DeleteRecordFactory.js";
 import { GetAllRecordFactory } from "../utils/getAllRecordsFactory.js";
@@ -39,25 +38,43 @@ export class BalanceService {
     try {
       const { cash, users_id } = body;
 
-      const queryEarn_Money =
-        "SELECT SUM(money_earned) FROM users_offers WHERE users_id=$1";
-      const money_earned = await pool.query(queryEarn_Money, [users_id]);
+      const checkUserQuery = "SELECT * FROM users WHERE id=$1";
+      const user = await pool.query(checkUserQuery, [users_id]);
+      if (user.rowCount) {
+        const queryUser = "SELECT * FROM user_balance WHERE user_id=$1";
+        const userBalance = await pool.query(queryUser, [users_id]);
+        console.log(user.rowCount);
 
-      const queryMoney_in_deals =
-        "SELECT SUM(money_in_deal) FROM users_offers WHERE users_id=$1";
-      const money_in_deals = await pool.query(queryMoney_in_deals, [users_id]);
+        if (userBalance.rowCount) {
+          return false;
+        } else {
+          const queryEarn_Money =
+            "SELECT SUM(money_earned) FROM users_offers WHERE users_id=$1";
+          const money_earned = await pool.query(queryEarn_Money, [users_id]);
 
-      const total_capital = cash + +money_in_deals.rows[0].sum;
-      const query =
-        "INSERT INTO user_balance (user_id, cash, money_earned, total_capital, money_in_deals) VALUES($1,$2, $3, $4, $5)";
+          const queryMoney_in_deals =
+            "SELECT SUM(money_in_deal) FROM users_offers WHERE users_id=$1";
+          const money_in_deals = await pool.query(queryMoney_in_deals, [
+            users_id,
+          ]);
 
-      await pool.query(query, [
-        users_id,
-        cash,
-        +money_earned.rows[0].sum,
-        total_capital,
-        +money_in_deals.rows[0].sum,
-      ]);
+          const total_capital = cash + +money_in_deals.rows[0].sum;
+          const query =
+            "INSERT INTO user_balance (user_id, cash, money_earned, total_capital, money_in_deals) VALUES($1,$2, $3, $4, $5)";
+
+          await pool.query(query, [
+            users_id,
+            cash,
+            +money_earned.rows[0].sum,
+            total_capital,
+            +money_in_deals.rows[0].sum,
+          ]);
+
+          return true;
+        }
+      } else {
+        return `user not found`;
+      }
     } catch (e) {
       console.error(e);
       console.log("failed to post");

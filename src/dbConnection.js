@@ -4,9 +4,9 @@ const { Pool } = pkg;
 
 dotenv.config();
 export const pool = new Pool({
-  user: process.env.DB_USER || "postgres",
-  host: process.env.DB_HOST || "localhost",
-  database: process.env.DB_NAME || "hedge fund",
-  password: process.env.DB_PASSWORD || "root",
-  port: process.env.DB_PORT || "3001",
+  user: process.env.PGUSER || "postgres",
+  host: process.env.PGHOST || "db",
+  database: process.env.PGDATABASE || "hedge fund",
+  password: process.env.PGPASSWORD || "root",
+  port: process.env.PGPORT || "5432",
 });

@@ -30,8 +30,16 @@ export default class BalanceController {
 
   async postBalance(req, res, next) {
     try {
-      await balanceServices.postBalance(req.body);
-      return res.json({ message: "ok" });
+      const creatingResult = await balanceServices.postBalance(req.body);
+      console.log(creatingResult);
+
+      if (creatingResult == "user not found") {
+        res.json({ message: "user not found" }).status(404);
+      } else if (creatingResult) {
+        res.json({ message: "201 created" });
+      } else if (!creatingResult) {
+        res.json({ message: "balence for this user alreay creaed" });
+      }
     } catch (e) {
       console.error(e);
       return next(ApiError.internal(e.message));

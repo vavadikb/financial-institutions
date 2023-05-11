@@ -35,29 +35,36 @@ export class DealsServices {
     try {
       const { users_id, offers_id, money_in_deal } = body;
       console.log(users_id, offers_id, money_in_deal);
-      const userCashQuery = "SELECT cash FROM user_balance WHERE user_id=$1";
-      const userCash = await pool.query(userCashQuery, [users_id]);
-      if (money_in_deal < +userCash.rows[0].cash) {
-        const query =
-          "INSERT INTO users_offers (users_id, offers_id, money_earned, money_in_deal,status) VALUES ( $1, $2 , $3 , $4 , $5)";
-        await pool.query(query, [
-          users_id,
-          offers_id,
-          0,
-          money_in_deal,
-          "opened",
-        ]);
 
-        const cashResult = +userCash.rows[0].cash - money_in_deal;
+      const checkUserQuery = "SELECT * FROM users WHERE id=$1";
+      const user = await pool.query(checkUserQuery, [users_id]);
+      if (user.rowCount) {
+        const userCashQuery = "SELECT cash FROM user_balance WHERE user_id=$1";
+        const userCash = await pool.query(userCashQuery, [users_id]);
+        if (money_in_deal < +userCash.rows[0].cash) {
+          const query =
+            "INSERT INTO users_offers (users_id, offers_id, money_earned, money_in_deal,status) VALUES ( $1, $2 , $3 , $4 , $5)";
+          await pool.query(query, [
+            users_id,
+            offers_id,
+            0,
+            money_in_deal,
+            "opened",
+          ]);
 
-        const updateCashQuery =
-          "UPDATE user_balance SET cash=$1 WHERE user_id=$2 ";
-        await pool.query(updateCashQuery, [cashResult, users_id]);
-        let message = `created deal for user ${users_id} with offer ${offers_id} and money amount ${money_in_deal}`;
-        return message;
+          const cashResult = +userCash.rows[0].cash - money_in_deal;
+
+          const updateCashQuery =
+            "UPDATE user_balance SET cash=$1 WHERE user_id=$2 ";
+          await pool.query(updateCashQuery, [cashResult, users_id]);
+          let message = `created deal for user ${users_id} with offer ${offers_id} and money amount ${money_in_deal}`;
+          return message;
+        } else {
+          let message = `you have no money to open this deal, please top up your balance`;
+          return message;
+        }
       } else {
-        let message = `you have no money to open this deal, please top up your balance`;
-        return message;
+        return `user with id ${users_id} not found`;
       }
     } catch (e) {
       console.error(e);
@@ -115,6 +122,12 @@ export class DealsServices {
     try {
       const query = "UPDATE users_offers SET status='closed' WHERE id=$1";
       await pool.query(query, [id]);
+
+      
+      //cash = cash +  money_in_deal
+      //money_in_deal = 0
+      //status = 'closed'
+
       const message = `Deal with id = ${id} closed`;
       return message;
     } catch (e) {

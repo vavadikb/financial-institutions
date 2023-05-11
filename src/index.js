@@ -8,6 +8,7 @@ import assetsOffersRouter from "./routes/assetsOffersRouter.js";
 import usersRouter from "./routes/usersRouter.js";
 import { pool } from "./dbConnection.js";
 import { update } from "./cron/cron.js";
+import { migration } from "./models/migration.js";
 import ErrorHandler from "./middlewares/ErrorHandler.js";
 
 import swaggerUi from "swagger-ui-express";
@@ -36,12 +37,18 @@ app.use(
 const startServer = async () => {
   try {
     console.log("index.js started");
-    await pool.connect().then(() => {
-      console.log("DB connected");
-      app.listen(port, () => {
-        console.log(`Example app listening on port ${port}`);
+    await pool
+      .connect()
+      .then(() => {
+        console.log("DB connected");
+        app.listen(port, () => {
+          console.log(`Example app listening on port ${port}`);
+        });
+      })
+      .then(() => {
+        migration();
+        
       });
-    });
   } catch (e) {
     console.log(e);
   }

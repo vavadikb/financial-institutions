@@ -3,7 +3,6 @@ import ApiError from "../ApiError/ApiError.js";
 import { pool } from "../dbConnection.js";
 
 const secret = process.env.SECRET || "SECRET_KEY_RANDOM";
-console.log(secret);
 
 const getIdByUserName = async (username) => {
   const queryText = `SELECT id FROM users WHERE username=$1`;
@@ -93,7 +92,6 @@ export async function registration(req, res, next) {
       const createBlance =
         "INSERT INTO user_balance(user_id,cash,money_earned,total_capital, money_in_deals) VALUES($1,0,0,0,0)";
 
-      console.log(id.rows[0].id);
       await pool.query(createBlance, [id.rows[0].id]);
 
       return res.json({
