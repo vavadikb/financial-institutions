@@ -421,7 +421,7 @@
         "tags": ["Assets"],
         "summary": "create new assets",
         "description": "create new record in users_offers users",
-        "operationId": "createDeal",
+        "operationId": "createAsset",
         "parameters": [
           {
             "name": "asset",
@@ -502,7 +502,7 @@
             "format": "int64"
           },
           {
-            "name": "deal",
+            "name": "asset",
             "in": "body",
             "description": "asset object",
             "required": true,
@@ -582,10 +582,10 @@
       "get": {
         "tags": ["Deals"],
         "summary": "Get all deals",
-        "description": "Returns a list of all users",
+        "description": "Returns a list of all deals",
         "responses": {
           "200": {
-            "description": "A list of users",
+            "description": "A list of deals",
             "schema": {
               "type": "array"
             }
@@ -629,6 +629,33 @@
           },
           "400": {
             "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/close-deal/{id}": {
+      "put": {
+        "tags": ["Deals"],
+        "summary": "Update deal by ID",
+        "description": "Updates a single deal",
+        "operationId": "updateDealById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of deal to update",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "Deal updated"
+          },
+          "404": {
+            "description": "Deal not found"
           }
         }
       }
