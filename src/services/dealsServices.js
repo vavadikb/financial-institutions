@@ -120,16 +120,37 @@ export class DealsServices {
 
   async closeDeal(id) {
     try {
-      const query = "UPDATE users_offers SET status='closed' WHERE id=$1";
-      await pool.query(query, [id]);
+      const checkDealQuery = `SELECT * FROM users_offers WHERE id=${id}`;
+      const deal = await pool.query(checkDealQuery);
+      console.log(deal.rows);
 
-      
-      //cash = cash +  money_in_deal
-      //money_in_deal = 0
-      //status = 'closed'
+      console.log(deal.rows[0].status, deal.rowCount, "deal");
+      if (deal.rowCount) {
+        if (deal.rows[0].status === "opened") {
+          const moneyQuery = `SELECT money_in_deal FROM users_offers WHERE id=${id}`;
+          const money = await pool.query(moneyQuery);
+          console.log(+money.rows[0].money_in_deal);
 
-      const message = `Deal with id = ${id} closed`;
-      return message;
+          const queryUpdate = `UPDATE user_balance SET cash = cash + ${+money
+            .rows[0].money_in_deal}, money_in_deals = money_in_deals -${+money
+            .rows[0].money_in_deal} WHERE user_id = ${deal.rows[0].users_id}`;
+          console.log(queryUpdate);
+
+          await pool.query(queryUpdate);
+
+          const query = "UPDATE users_offers SET status='closed' WHERE id=$1";
+          await pool.query(query, [id]);
+
+          const message = `Deal with id = ${id} closed`;
+          return message;
+        } else {
+          const message = `Deal with id ${id} already closed`;
+          return message;
+        }
+      } else {
+        const message = `Deal with id = ${id} not found`;
+        return message;
+      }
     } catch (e) {
       console.error(e);
       throw e;

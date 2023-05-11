@@ -74,7 +74,7 @@ export class DealsController {
 
   async closeDeal(req, res, next) {
     try {
-      const id = req.params;
+      const id = req.params.id;
       const message = await dealsService.closeDeal(id);
       return res.status(202).json({ message: message });
     } catch (e) {
