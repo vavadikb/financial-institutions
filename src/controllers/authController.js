@@ -1,15 +1,17 @@
 import CryptoJS from "crypto-js";
+import ApiError from "../ApiError/ApiError.js";
 import { pool } from "../dbConnection.js";
 
-const secret = process.env.SECRET;
+const secret = process.env.SECRET || "SECRET_KEY_RANDOM";
 
-const getIdByUserName = async (username) => {
+export const getIdByUserName = async (username) => {
   const queryText = `SELECT id FROM users WHERE username=$1`;
   const result = await pool.query(queryText, [username]);
+  console.log(queryText);
   return result.rows[0];
 };
 
-const generateAccessToken = async (username) => {
+export const generateAccessToken = async (username) => {
   const header = { alg: "HS256", typ: "JWT" };
   const id = await getIdByUserName(username);
   const payload = { id };
@@ -24,6 +26,7 @@ const generateAccessToken = async (username) => {
     encodedHeader + "." + encodedPayload,
     secret
   );
+
   const encodedSignature = CryptoJS.enc.Base64.stringify(signature);
   const token = `${encodedHeader}.${encodedPayload}.${encodedSignature}`;
   return token;
@@ -46,7 +49,7 @@ export const authenticateToken = (req, res, next) => {
   );
   const secret = process.env.SECRET;
   const signature = CryptoJS.enc.Base64.parse(encodedSignature);
-
+  console.log(header, payload, signature);
   try {
     const isVerified = CryptoJS.HmacSHA256(
       encodedHeader + "." + encodedPayload,
@@ -63,11 +66,11 @@ export const authenticateToken = (req, res, next) => {
     next();
   } catch (err) {
     console.error("auth error", err);
-    return res.sendStatus(500);
+    return next(ApiError.internal(e.message));
   }
 };
 
-export async function registration(req, res) {
+export async function registration(req, res, next) {
   try {
     const { username, password } = req.body;
 
@@ -83,6 +86,15 @@ export async function registration(req, res) {
       const insertText = "INSERT INTO users(username, password) VALUES($1, $2)";
       await pool.query(insertText, [username, hashPassword]);
 
+      const queryId = "SELECT id FROM users WHERE username=$1";
+      const id = await pool.query(queryId, [username]);
+      console.log(id);
+
+      const createBlance =
+        "INSERT INTO user_balance(user_id,cash,money_earned,total_capital, money_in_deals) VALUES($1,0,0,0,0)";
+
+      await pool.query(createBlance, [id.rows[0].id]);
+
       return res.json({
         message: `User ${username} successfully registered`,
       });
@@ -92,13 +104,12 @@ export async function registration(req, res) {
     }
   } catch (err) {
     console.error("Error connecting to database", err);
-    return res.status(500).json({ message: "Internal server error" });
+    return next(ApiError.internal(e.message));
   }
 }
 
-export async function login(req, res) {
+export async function login(req, res, next) {
   const { username, password } = req.body;
-
   try {
     const result = await pool.query(
       `SELECT * FROM users WHERE username = '${username}'`
@@ -110,12 +121,17 @@ export async function login(req, res) {
 
     const user = result.rows[0];
     const hashPassword = CryptoJS.SHA256(password).toString();
+    console.log(hashPassword);
+    console.log(
+      "d109d56fe0913b1b594d244caa03b3a96c875414656072612bbddba45aa77768"
+    );
 
     if (user.password !== hashPassword) {
       return res.status(400).json({ message: "Bad password" });
     }
-
+    console.log(username, password, result);
     const token = await generateAccessToken(username);
+
     return res.json({ token });
   } catch (err) {
     console.log(err);
@@ -123,12 +139,12 @@ export async function login(req, res) {
   }
 }
 
-export async function getUsers(req, res) {
+export async function getUsers(req, res, next) {
   try {
-    const result = await pool.query("SELECT username FROM users;");
+    const result = await pool.query("SELECT username FROM users");
     res.json(result.rows);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Internal server error" });
+    return next(ApiError.internal(e.message));
   }
 }

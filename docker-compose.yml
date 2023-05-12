@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  app:
+    image: node:latest
+    working_dir: /app
+    environment:
+      PGHOST: db
+      PGPORT: 5432
+      PGDATABASE: "hedge fund"
+      PGUSER: "postgres"
+      PGPASSWORD: root
+    volumes:
+      - .:/app
+    ports:
+      - 3000:3000
+    command: >
+      sh -c "npm install && npm start"
+    depends_on:
+      - db
+
+  db:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: "hedge fund"
+    ports:
+      - "5432:5432"

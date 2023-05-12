@@ -3,11 +3,19 @@ import dotenv from "dotenv";
 const { Pool } = pkg;
 
 dotenv.config();
+// export const pool = new Pool({
+//   user: process.env.PGUSER || "postgres",
+//   host: process.env.PGHOST || "localhost",
+//   database: process.env.PGDATABASE || "hedge fund",
+//   password: process.env.PGPASSWORD || "root",
+//   port: process.env.PGPORT || "3001",
+// });
 
+// for docker compose
 export const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT,
+  user: process.env.PGUSER || "postgres",
+  host: process.env.PGHOST || "db",
+  database: process.env.PGDATABASE || "hedge fund",
+  password: process.env.PGPASSWORD || "root",
+  port: process.env.PGPORT || "5431",
 });

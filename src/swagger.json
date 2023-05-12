@@ -1,0 +1,1006 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "My API",
+    "version": "1.0.0"
+  },
+  "basePath": "/",
+  "schemes": ["http", "https"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "paths": {
+    "/balance": {
+      "get": {
+        "tags": ["Balances"],
+        "summary": "Get all balances",
+        "description": "Returns a list of all balances",
+        "responses": {
+          "200": {
+            "description": "A list of balances",
+            "schema": {
+              "type": "array"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Balances"],
+        "summary": "create new balance  for user",
+        "description": "create new record in user_balance table",
+        "operationId": "createBalances",
+        "parameters": [
+          {
+            "name": "Balance",
+            "in": "body",
+            "description": "balance object",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "cash": {
+                  "type": "number",
+                  "default": 10000
+                },
+                "users_id": {
+                  "type": "number",
+                  "default": 6
+                }
+              }
+            }
+          }
+        ],
+
+        "responses": {
+          "201": {
+            "description": "balance created"
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/balance/{id}": {
+      "get": {
+        "tags": ["Balances"],
+        "summary": "Get balance by ID",
+        "description": "Returns a single balance",
+        "operationId": "getBalanceById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of balance to return",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "balance found"
+          },
+          "404": {
+            "description": "balance not found"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Balances"],
+        "summary": "Update balance by ID",
+        "description": "Updates a single user",
+        "operationId": "updateBalanceById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of balance to update",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "Balance",
+            "in": "body",
+            "description": "balance object",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "cash": {
+                  "type": "number",
+                  "default": 10000
+                },
+                "users_id": {
+                  "type": "number",
+                  "default": 6
+                }
+              }
+            }
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "balance updated"
+          },
+          "404": {
+            "description": "balance not found"
+          }
+        }
+      },
+
+      "delete": {
+        "tags": ["Balances"],
+        "summary": "delete balance by ID",
+        "description": "delete user balance",
+        "operationId": "deleteBalances",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of balance to return",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "balance delted"
+          },
+          "404": {
+            "description": "balance not found"
+          }
+        }
+      }
+    },
+
+    "/assets-offers": {
+      "get": {
+        "tags": ["Assets-Offers"],
+        "summary": "Get all assets-offers  records ",
+        "description": "Returns a list of all assets-offers",
+        "responses": {
+          "200": {
+            "description": "A list of assets-offers",
+            "schema": {
+              "type": "array"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Assets-Offers"],
+        "summary": "create new assets-offers record",
+        "description": "create new record in assets_offers teble",
+        "operationId": "createAssetsOffers",
+        "parameters": [
+          {
+            "name": "assets-offers",
+            "in": "body",
+            "description": "assets-offers object",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "assets_ids": {
+                  "type": "array",
+                  "default": [5, 6]
+                },
+                "title": {
+                  "type": "string",
+                  "default": "title"
+                },
+                "description": {
+                  "type": "string",
+                  "default": "description"
+                }
+              }
+            }
+          }
+        ],
+
+        "responses": {
+          "201": {
+            "description": "assets-offers record created"
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/assets-offers/{id}": {
+      "get": {
+        "tags": ["Assets-Offers"],
+        "summary": "Get assets-offers by ID",
+        "description": "Returns a single assets-offers record",
+        "operationId": "getAssetsOffersById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of assets-offers to return",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Asset-offers found"
+          },
+          "404": {
+            "description": "Asset-offers not found"
+          }
+        }
+      },
+
+      "delete": {
+        "tags": ["Assets-Offers"],
+        "summary": "delete assets-offers by ID",
+        "description": "delete assets-offers",
+        "operationId": "deleteAssetsOffers",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of assets-offers to return",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "assets-offers record delted"
+          },
+          "404": {
+            "description": "assets-offers record not found"
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get all users",
+        "description": "Returns a list of all users",
+        "responses": {
+          "200": {
+            "description": "A list of users",
+            "schema": {
+              "type": "array"
+            }
+          }
+        }
+      }
+    },
+
+    "/users/{id}": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get user by ID",
+        "description": "Returns a single user",
+        "operationId": "getUserById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of user to return",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User found"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      },
+
+      "put": {
+        "tags": ["Users"],
+        "summary": "Update user by ID",
+        "description": "Updates a single user",
+        "operationId": "updateUserById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of user to update",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "user",
+            "in": "body",
+            "description": "User object",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string",
+                  "default": "new username"
+                },
+                "password": {
+                  "type": "string",
+                  "default": "new password"
+                }
+              }
+            }
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "User updated",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string",
+                  "default": "new username"
+                },
+                "password": {
+                  "type": "string",
+                  "default": "new password"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Users"],
+        "summary": "delete user by ID",
+        "description": "delete user",
+        "operationId": "deleteUser",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of user to return",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "User delted"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      },
+      "definitions": {
+        "User": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "name": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/assets": {
+      "get": {
+        "tags": ["Assets"],
+        "summary": "Get all assets",
+        "description": "Returns a list of all users",
+        "responses": {
+          "200": {
+            "description": "A list of users",
+            "schema": {
+              "type": "array"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Assets"],
+        "summary": "create new assets",
+        "description": "create new record in users_offers users",
+        "operationId": "createAsset",
+        "parameters": [
+          {
+            "name": "asset",
+            "in": "body",
+            "description": "asset object",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "default": "crypto"
+                },
+                "description": {
+                  "type": "string",
+                  "default": "Invest in BTC, ETH, SOL"
+                },
+                "income_perсent": {
+                  "type": "number",
+                  "default": 25
+                },
+                "risks": {
+                  "type": "string",
+                  "default": "high"
+                }
+              }
+            }
+          }
+        ],
+
+        "responses": {
+          "201": {
+            "description": "asset created"
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/assets/{id}": {
+      "get": {
+        "tags": ["Assets"],
+        "summary": "Get assets by ID",
+        "description": "Returns a single asset",
+        "operationId": "getAssetById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of user to return",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Asset found"
+          },
+          "404": {
+            "description": "Asset not found"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Assets"],
+        "summary": "Update asset by ID",
+        "description": "Updates a single asset",
+        "operationId": "updateAssetById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of asset to update",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "asset",
+            "in": "body",
+            "description": "asset object",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "default": "crypto"
+                },
+                "description": {
+                  "type": "string",
+                  "default": "Invest in BTC, ETH, SOL"
+                },
+                "income_perсent": {
+                  "type": "number",
+                  "default": 25
+                },
+                "risks": {
+                  "type": "string",
+                  "default": "high"
+                }
+              }
+            }
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "Asset updated",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string",
+                  "default": "new username"
+                },
+                "password": {
+                  "type": "string",
+                  "default": "new password"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "asset not found"
+          }
+        }
+      },
+
+      "delete": {
+        "tags": ["Assets"],
+        "summary": "delete user by ID",
+        "description": "delete user",
+        "operationId": "deleteUser",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of user to return",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "User delted"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "/deals": {
+      "get": {
+        "tags": ["Deals"],
+        "summary": "Get all deals",
+        "description": "Returns a list of all deals",
+        "responses": {
+          "200": {
+            "description": "A list of deals",
+            "schema": {
+              "type": "array"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Deals"],
+        "summary": "create new deal",
+        "description": "create new record in users_offers users",
+        "operationId": "createDeal",
+        "parameters": [
+          {
+            "name": "deal",
+            "in": "body",
+            "description": "deal object",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "offers_id": {
+                  "type": "number",
+                  "default": 18
+                },
+                "users_id": {
+                  "type": "number",
+                  "default": 57
+                },
+                "money_in_deal": {
+                  "type": "number",
+                  "default": 1000
+                }
+              }
+            }
+          }
+        ],
+
+        "responses": {
+          "201": {
+            "description": "deal created"
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/close-deal/{id}": {
+      "put": {
+        "tags": ["Deals"],
+        "summary": "Update deal by ID",
+        "description": "Updates a single deal",
+        "operationId": "updateDealById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of deal to update",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "Deal updated"
+          },
+          "404": {
+            "description": "Deal not found"
+          }
+        }
+      }
+    },
+    "/deals/{id}": {
+      "get": {
+        "tags": ["Deals"],
+        "summary": "Get deal by ID",
+        "description": "Returns a single deal",
+        "operationId": "getDealById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of deal to return",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "deal found"
+          },
+          "404": {
+            "description": "deal not found"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Deals"],
+        "summary": "Update deal by ID",
+        "description": "Updates a single deal",
+        "operationId": "updateDealById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of deal to update",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "deal",
+            "in": "body",
+            "description": "deal object",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "offers_id": {
+                  "type": "number",
+                  "default": 18
+                },
+                "users_id": {
+                  "type": "number",
+                  "default": 57
+                },
+                "money_in_deal": {
+                  "type": "number",
+                  "default": 1000
+                }
+              }
+            }
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "Deal updated"
+          },
+          "404": {
+            "description": "Deal not found"
+          }
+        }
+      },
+
+      "delete": {
+        "tags": ["Deals"],
+        "summary": "delete usedealr by ID",
+        "description": "delete deal",
+        "operationId": "deleteDeal",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of deal to return",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deal delted"
+          },
+          "404": {
+            "description": "Deal not found"
+          }
+        }
+      }
+    },
+    "/offers": {
+      "get": {
+        "tags": ["Offers"],
+        "summary": "Get all offers",
+        "description": "Returns a list of all offers",
+        "responses": {
+          "200": {
+            "description": "A list of offers",
+            "schema": {
+              "type": "array"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Offers"],
+        "summary": "create new offer",
+        "description": "create new offer in table offers",
+        "operationId": "createOffer",
+        "parameters": [
+          {
+            "name": "offer",
+            "in": "body",
+            "description": "offer object",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "default": "title"
+                },
+                "description": {
+                  "type": "string",
+                  "default": "description"
+                },
+                "assets_ids": {
+                  "type": "array",
+                  "default": [5, 6]
+                }
+              }
+            }
+          }
+        ],
+
+        "responses": {
+          "201": {
+            "description": "Offer created"
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/offers/{id}": {
+      "get": {
+        "tags": ["Offers"],
+        "summary": "Get offers by ID",
+        "description": "Returns a single offer",
+        "operationId": "getOfferById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of offer to return",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "offer found"
+          },
+          "404": {
+            "description": "offer not found"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Offers"],
+        "summary": "Update offers by ID",
+        "description": "Updates a single offer",
+        "operationId": "updateOfferById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of offer to update",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "offer",
+            "in": "body",
+            "description": "offer object",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "default": "new title"
+                },
+                "description": {
+                  "type": "string",
+                  "default": "new description"
+                },
+                "assets_ids": {
+                  "type": "array",
+                  "default": [5, 6]
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "offer updated",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string",
+                  "default": "new username"
+                },
+                "password": {
+                  "type": "string",
+                  "default": "new password"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Offer not found"
+          }
+        }
+      },
+
+      "delete": {
+        "tags": ["Offers"],
+        "summary": "delete offer by ID",
+        "description": "delete offer",
+        "operationId": "deleteOffer",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of user to return",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Offer delted"
+          },
+          "404": {
+            "description": "Offer not found"
+          }
+        }
+      }
+    },
+
+    "/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "log in",
+        "description": "log in into user account",
+        "operationId": "loginUser",
+        "parameters": [
+          {
+            "name": "user",
+            "in": "body",
+            "description": "User object",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string",
+                  "default": "new username"
+                },
+                "password": {
+                  "type": "string",
+                  "default": "new password"
+                }
+              }
+            }
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "logined"
+          },
+          "400": {
+            "description": "Invalid login or password"
+          }
+        }
+      }
+    },
+    "/registration": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "create new user",
+        "description": "create new user in table users",
+        "operationId": "createUser",
+        "parameters": [
+          {
+            "name": "user",
+            "in": "body",
+            "description": "User object",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string",
+                  "default": "new username"
+                },
+                "password": {
+                  "type": "string",
+                  "default": "new password"
+                }
+              }
+            }
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "User created"
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    }
+  }
+}
