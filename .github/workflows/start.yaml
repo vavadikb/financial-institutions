@@ -11,5 +11,5 @@ jobs:
           node-version: "19.x"
       - name: Install Dependencies
         run: npm install
-      - name: Run docker
-        run: npm run docker
+      - name: Run test
+        run: npm test
