@@ -1,3 +1,5 @@
+name: Test app
+on: run_test
 jobs:
   build:
     runs-on: ubuntu-latest
