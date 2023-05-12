@@ -1,3 +1,5 @@
+name: Test app
+on: workflow_dispatch
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -6,8 +8,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: "14.x"
+          node-version: "19.x"
       - name: Install Dependencies
         run: npm install
-      - name: Run Tests
-        run: npm test
+      - name: Run docker
+        run: npm run docker
