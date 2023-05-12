@@ -14,7 +14,7 @@ export class DeleteRecord {
         (error, results) => {
           if (error) {
             reject(error);
-          } else {
+          } else {  
             resolve(results.affectedRows);
           }
         }

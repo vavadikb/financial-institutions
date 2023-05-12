@@ -8,13 +8,14 @@ services:
       PGHOST: db
       PGPORT: 5432
       PGDATABASE: "hedge fund"
-      PGUSER: postgres
+      PGUSER: "postgres"
       PGPASSWORD: root
     volumes:
       - .:/app
     ports:
       - 3000:3000
-    command: npm start
+    command: >
+      sh -c "npm install && npm start"
     depends_on:
       - db
 

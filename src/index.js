@@ -37,6 +37,7 @@ app.use(
 const startServer = async () => {
   try {
     console.log("index.js started");
+    console.log(process.env);
     await pool
       .connect()
       .then(() => {
@@ -47,7 +48,6 @@ const startServer = async () => {
       })
       .then(() => {
         migration();
-        
       });
   } catch (e) {
     console.log(e);

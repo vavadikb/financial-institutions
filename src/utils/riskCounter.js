@@ -24,9 +24,14 @@ export const riskValue = (rows) => {
 };
 
 export const incomePercentCounter = (rows) => {
-  const percetOfIncome =
-    rows.reduce((acc, item) => {
-      return acc + +item.income_percent;
-    }, 0) / rows.length;
+  let percetOfIncome = 0;
+  if (rows.length) {
+    percetOfIncome =
+      rows.reduce((acc, item) => {
+        return acc + +item.income_percent;
+      }, 0) / rows.length;
+    console.log(percetOfIncome);
+  }
+
   return percetOfIncome;
 };

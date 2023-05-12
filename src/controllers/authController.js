@@ -4,13 +4,14 @@ import { pool } from "../dbConnection.js";
 
 const secret = process.env.SECRET || "SECRET_KEY_RANDOM";
 
-const getIdByUserName = async (username) => {
+export const getIdByUserName = async (username) => {
   const queryText = `SELECT id FROM users WHERE username=$1`;
   const result = await pool.query(queryText, [username]);
+  console.log(queryText);
   return result.rows[0];
 };
 
-const generateAccessToken = async (username) => {
+export const generateAccessToken = async (username) => {
   const header = { alg: "HS256", typ: "JWT" };
   const id = await getIdByUserName(username);
   const payload = { id };
